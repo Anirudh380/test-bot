@@ -38,3 +38,8 @@ func (l *loginRepositoryImpl) NewLogin() {
 	fmt.Println(token.AccessToken)
 	l.Token.SetToken(token.AccessToken)
 }
+
+
+func (l *loginRepositoryImpl) GetToken() string {
+	return l.Token.GetToken()
+}

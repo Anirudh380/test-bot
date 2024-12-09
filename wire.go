@@ -1,11 +1,12 @@
 //go:build wireinject
 // +build wireinject
 
-package wire
+package main
 
 import (
 	"test-bot/app"
 	"test-bot/config"
+	"test-bot/feed"
 	"test-bot/logger"
 	"test-bot/login"
 
@@ -19,7 +20,7 @@ func InitializeApp() (app.App, error) {
 			logger.NewLogger,
 			config.NewConfig,
 			login.NewLoginRepository,
-
+			feed.NewFeedRepository,
 		),
 	)
 }

@@ -14,6 +14,17 @@ type lockedToken struct {
 }
 
 func (lt *lockedToken) GetToken() string {
+	delay := 100 * time.Millisecond
+	for {
+		if lt.token == "" {
+			time.Sleep(delay)
+		} else {
+			break
+		}
+		if delay > 1*time.Minute {
+			delay *= 2
+		}
+	}
 	return lt.token
 }
 
@@ -30,7 +41,7 @@ type loginRepositoryImpl struct {
 
 func NewLoginRepository(conf *config.Config, log *logger.Logger) (LoginRepository, error) {
 	l := &loginRepositoryImpl{
-		conf: conf,
+		conf:  conf,
 		Token: lockedToken{},
 	}
 
