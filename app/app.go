@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"test-bot/login"
 	tpr "test-bot/proto"
 
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -93,13 +95,29 @@ func (i *impl) Start() {
 			continue
 		}
 
-		fmt.Println(protoMessage)
+		fmt.Printf("Received message: %+v\n", protoMessage)
+		jsonBytes, err := protojson.Marshal(&protoMessage)
+		if err != nil {
+			log.Println("Error converting Protobuf to JSON:", err)
+			return
+		}
+
+		var prettyJSON map[string]interface{}
+		if err := json.Unmarshal(jsonBytes, &prettyJSON); err != nil {
+			log.Println("Error formatting JSON:", err)
+			return
+		}
+
+		prettyFormattedJSON, _ := json.MarshalIndent(prettyJSON, "", "  ")
+		log.Println("JSON Representation:")
+		log.Println(string(prettyFormattedJSON))
+
 	}
 
 	wg.Wait()
 }
 
-// func (i *impl) Start() {
+// func (i *impl) Record() {
 // 	// Open a file to log messages
 // 	file, err := os.Create("messages.log")
 // 	if err != nil {
