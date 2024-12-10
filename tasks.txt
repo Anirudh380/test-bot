@@ -1,0 +1,6 @@
+fix login bug
+add logger
+add ratelimit on upstox
+connect db
+collect previous data
+implement rsi algorithms
